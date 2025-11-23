@@ -1,0 +1,422 @@
+openapi: 3.0.0
+info:
+  title: API de Gestão de Empresas e Funcionários
+  description: API para gerenciar empresas e seus funcionários.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+    description: Servidor local
+
+paths:
+  /companies:
+    get:
+      summary: Listar empresas
+      description: Retorna uma lista de todas as empresas.
+      responses:
+        200:
+          description: Lista de empresas retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyResponse'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Criar empresa
+      description: Cria uma nova empresa.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompany'
+      responses:
+        201:
+          description: Empresa criada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /companies/{id}:
+    get:
+      summary: Obter empresa por ID
+      description: Retorna os detalhes de uma empresa específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da empresa
+          schema:
+            type: string
+      responses:
+        200:
+          description: Empresa retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      summary: Atualizar empresa
+      description: Atualiza os dados de uma empresa existente.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da empresa
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCompany'
+      responses:
+        200:
+          description: Empresa atualizada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Deletar empresa
+      description: Remove uma empresa existente.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da empresa
+          schema:
+            type: string
+      responses:
+        204:
+          description: Empresa deletada com sucesso.
+        400:
+          description: Não é permitido deletar empresa com funcionários ativos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 'error'
+                message: 'Cannot delete company with active employees'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /employees:
+    post:
+      summary: Criar funcionário
+      description: Cria um novo funcionário.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmployee'
+      responses:
+        201:
+          description: Funcionário criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /employees/{id}:
+    get:
+      summary: Obter funcionário por ID
+      description: Retorna os detalhes de um funcionário específico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do funcionário
+          schema:
+            type: string
+      responses:
+        200:
+          description: Funcionário retornado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      summary: Atualizar funcionário
+      description: Atualiza os dados de um funcionário existente.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do funcionário
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmployee'
+      responses:
+        200:
+          description: Funcionário atualizado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Deletar funcionário
+      description: Remove um funcionário existente.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do funcionário
+          schema:
+            type: string
+      responses:
+        204:
+          description: Funcionário deletado com sucesso.
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /employees/company/{companyId}:
+    get:
+      summary: Listar funcionários por empresa
+      description: Retorna lista de funcionários de uma empresa.
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          description: ID da empresa
+          schema:
+            type: string
+      responses:
+        200:
+          description: Lista de funcionários retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeResponse'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    CreateCompany:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nome da empresa.
+          example: 'Acme'
+        sector:
+          type: string
+          description: Setor da empresa.
+          example: 'Tecnologia'
+        cnpj:
+          type: string
+          description: CNPJ da empresa.
+          example: '11222333000181'
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+          description: Telefone da empresa.
+          example: '+55 11 91234-5678'
+    UpdateCompany:
+      type: object
+      properties:
+        name:
+          type: string
+        sector:
+          type: string
+        cnpj:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+    CompanyResponse:
+      allOf:
+        - $ref: '#/components/schemas/CreateCompany'
+        - type: object
+          properties:
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+    CreateEmployee:
+      type: object
+      properties:
+        companyId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        position:
+          type: string
+        password:
+          type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+        terminationDate:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/Address'
+    UpdateEmployee:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        position:
+          type: string
+        password:
+          type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+        terminationDate:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/Address'
+    EmployeeResponse:
+      allOf:
+        - $ref: '#/components/schemas/CreateEmployee'
+        - type: object
+          properties:
+            id:
+              type: string
+            companyId:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+    Address:
+      type: object
+      properties:
+        state:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        number:
+          type: string
+        zipcode:
+          type: string
+        complement:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: 'Error message describing the problem'
+
+  responses:
+    BadRequest:
+      description: Requisição inválida (erros de validação)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 'error'
+            message: 'Name must have at least 2 characters'
+    NotFound:
+      description: Recurso não encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 'error'
+            message: 'Company not found'
+    Conflict:
+      description: Conflito de dados
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 'error'
+            message: 'Company with this CNPJ already exists'
+    InternalServerError:
+      description: Erro de servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 'error'
+            message: 'Internal server error'
