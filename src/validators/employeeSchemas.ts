@@ -14,10 +14,10 @@ export const createEmployeeSchema = z.object({
 });
 
 export const updateEmployeeSchema = z.object({
-  name: z.string().min(2).optional(),
+  name: z.string().min(2, 'Name must have at least 2 characters').optional(),
   email: z.email().optional(),
-  position: z.string().min(2).optional(),
-  password: z.string().min(6).optional(),
+  position: z.string().min(2, 'Position must have at least 2 characters').optional(),
+  password: z.string().min(6, 'Password must have at least 6 characters').optional(),
   status: z.enum(ActivityStatus).optional(),
   terminationDate: z.iso.datetime().optional(),
   address: updateAddressSchema.optional(),

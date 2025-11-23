@@ -1,5 +1,4 @@
 import { Address } from 'db/models/AddressModel';
-import mongoose from 'mongoose';
 
 export type CompanyAddress = Address;
 

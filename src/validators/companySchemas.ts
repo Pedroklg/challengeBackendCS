@@ -17,8 +17,8 @@ export const createCompanySchema = z.object({
 });
 
 export const updateCompanySchema = z.object({
-  name: z.string().min(2).optional(),
-  sector: z.string().min(2).optional(),
+  name: z.string().min(2, 'Name must have at least 2 characters').optional(),
+  sector: z.string().min(2, 'Sector must have at least 2 characters').optional(),
   cnpj: z.preprocess(
     (val) => (typeof val === 'string' ? val.replace(/[^\d]+/g, '') : val),
     z

@@ -42,7 +42,7 @@ export class CompanyController {
   }
 
   async list(
-    req: Request<Record<string, never>, CompanyResponseDTO[]>,
+    _req: Request<Record<string, never>, CompanyResponseDTO[]>,
     res: Response
   ): Promise<Response> {
     const repository = new MongoCompanyRepository();
