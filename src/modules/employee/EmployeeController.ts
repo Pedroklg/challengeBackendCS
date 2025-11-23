@@ -16,6 +16,7 @@ export class EmployeeController {
   ): Promise<Response> {
     const employeeRepository = new MongoEmployeeRepository();
     const companyRepository = new MongoCompanyRepository();
+
     const useCase = new CreateEmployeeUseCase(employeeRepository, companyRepository);
 
     const employee = await useCase.execute(req.body);
@@ -26,6 +27,7 @@ export class EmployeeController {
 
   async getById(req: Request<IdParams, EmployeeResponseRequest>, res: Response): Promise<Response> {
     const repository = new MongoEmployeeRepository();
+
     const useCase = new GetEmployeeUseCase(repository);
 
     const employee = await useCase.execute(req.params.id);
@@ -40,9 +42,11 @@ export class EmployeeController {
   ): Promise<Response> {
     const employeeRepository = new MongoEmployeeRepository();
     const companyRepository = new MongoCompanyRepository();
+
     const useCase = new ListEmployeesByCompanyUseCase(employeeRepository, companyRepository);
 
     const employees = await useCase.execute(req.params.companyId);
+
     const employeesResponse: EmployeeResponseRequest[] = employees.map((employee) => {
       return employee.toObject();
     });
@@ -55,6 +59,7 @@ export class EmployeeController {
     res: Response
   ): Promise<Response> {
     const repository = new MongoEmployeeRepository();
+
     const useCase = new UpdateEmployeeUseCase(repository);
 
     const employee = await useCase.execute(req.params.id, req.body);

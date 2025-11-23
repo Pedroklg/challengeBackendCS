@@ -1,10 +1,16 @@
 import { AppError } from '../../../shared/AppError';
 import { CompanyRepository } from '../repositories/CompanyRepository';
+import { EmployeeRepository } from 'modules/employee/repositories/EmployeeRepository';
 import { CreateCompanyDTO } from '../types';
 import { CompanyDBOutDTO } from '../repositories/dto';
+import { CreateEmployeeUseCase } from '../../employee/useCases/CreateEmployeeUseCase';
+import { CreateEmployeeRequest } from '../../employee/types';
 
 export class CreateCompanyUseCase {
-  constructor(private companyRepository: CompanyRepository) {}
+  constructor(
+    private companyRepository: CompanyRepository,
+    private employeeRepository?: EmployeeRepository
+  ) {}
 
   async execute(data: CreateCompanyDTO): Promise<CompanyDBOutDTO> {
     const existingCompany = await this.companyRepository.findByCnpj(data.cnpj);
@@ -13,6 +19,28 @@ export class CreateCompanyUseCase {
       throw new AppError('Company with this CNPJ already exists', 409);
     }
 
-    return this.companyRepository.create(data);
+    const { firstEmployee, ...companyData } = data;
+
+    const created = await this.companyRepository.create(companyData);
+
+    if (firstEmployee) {
+      if (!this.employeeRepository) {
+        throw new AppError('Employee repository not provided', 500);
+      }
+
+      const employeeUseCase = new CreateEmployeeUseCase(
+        this.employeeRepository,
+        this.companyRepository
+      );
+
+      const employeeData: CreateEmployeeRequest = {
+        companyId: created._id.toString(),
+        ...firstEmployee,
+      };
+
+      await employeeUseCase.execute(employeeData);
+    }
+
+    return created;
   }
 }

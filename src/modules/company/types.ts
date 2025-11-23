@@ -1,4 +1,5 @@
 import { Address } from 'db/models/AddressModel';
+import { CreateEmployeeRequest } from '../employee/types';
 
 export type CompanyAddress = Address;
 
@@ -8,6 +9,7 @@ export interface CreateCompanyDTO {
   cnpj: string;
   address: CompanyAddress;
   phone?: string;
+  firstEmployee?: Omit<CreateEmployeeRequest, 'companyId'>;
 }
 
 export type UpdateCompanyDTO = Partial<CreateCompanyDTO>;

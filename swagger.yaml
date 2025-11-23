@@ -272,6 +272,25 @@ components:
           type: string
           description: Telefone da empresa.
           example: '+55 11 91234-5678'
+        firstEmployee:
+          $ref: '#/components/schemas/CreateEmployeeNoCompanyId'
+      example:
+        name: 'Acme'
+        sector: 'Tecnologia'
+        cnpj: '11222333000181'
+        address:
+          state: 'SP'
+          city: 'São Paulo'
+          street: 'Avenida Paulista'
+          number: '1000'
+          zipcode: '01310100'
+          complement: null
+        phone: '+55 11 91234-5678'
+        firstEmployee:
+          name: 'John Doe'
+          email: 'john.doe@example.com'
+          position: 'Engineer'
+          password: 'Password123!'
     UpdateCompany:
       type: object
       properties:
@@ -303,6 +322,28 @@ components:
       properties:
         companyId:
           type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        position:
+          type: string
+        password:
+          type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+        terminationDate:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/Address'
+    CreateEmployeeNoCompanyId:
+      type: object
+      properties:
         name:
           type: string
         email:

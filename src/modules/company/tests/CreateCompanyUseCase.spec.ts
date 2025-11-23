@@ -1,4 +1,5 @@
 import { InMemoryCompanyRepository } from '../repositories/InMemoryCompanyRepository';
+import { InMemoryEmployeeRepository } from '../../employee/repositories/InMemoryEmployeeRepository';
 import { CreateCompanyUseCase } from '../useCases/CreateCompanyUseCase';
 import { AppError } from '../../../shared/AppError';
 import { makeFakeCompanyData } from './utils';
@@ -25,5 +26,32 @@ describe('CreateCompanyUseCase', () => {
 
     await expect(useCase.execute(dto)).rejects.toBeInstanceOf(AppError);
     await expect(useCase.execute(dto)).rejects.toThrow('Company with this CNPJ already exists');
+  });
+
+  it('should create a first employee when firstEmployee is provided', async () => {
+    const companyRepo = new InMemoryCompanyRepository();
+    const employeeRepo = new InMemoryEmployeeRepository();
+    const useCase = new CreateCompanyUseCase(companyRepo, employeeRepo);
+
+    const fakeCompany = makeFakeCompanyData({
+      firstEmployee: {
+        name: 'John Doe',
+        email: `john.doe.${Date.now()}@example.com`,
+        position: 'Engineer',
+        password: 'Password123!',
+        status: undefined,
+        terminationDate: undefined,
+        address: undefined,
+      },
+    });
+
+    const createdCompany = await useCase.execute(fakeCompany);
+
+    expect(createdCompany).toHaveProperty('_id');
+
+    const employees = await employeeRepo.findByCompanyId(createdCompany._id.toString());
+
+    expect(employees.length).toBe(1);
+    expect(employees[0].email).toBe(fakeCompany.firstEmployee?.email);
   });
 });

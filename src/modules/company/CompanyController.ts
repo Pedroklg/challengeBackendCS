@@ -15,7 +15,9 @@ export class CompanyController {
     res: Response
   ): Promise<Response> {
     const repository = new MongoCompanyRepository();
-    const useCase = new CreateCompanyUseCase(repository);
+    const employeeRepository = new MongoEmployeeRepository();
+
+    const useCase = new CreateCompanyUseCase(repository, employeeRepository);
 
     const company = await useCase.execute(req.body);
     const companyObj = company.toObject();
@@ -25,6 +27,7 @@ export class CompanyController {
 
   async getById(req: Request<IdParams, CompanyResponseDTO>, res: Response): Promise<Response> {
     const repository = new MongoCompanyRepository();
+
     const useCase = new GetCompanyUseCase(repository);
 
     const company = await useCase.execute(req.params.id);
@@ -38,6 +41,7 @@ export class CompanyController {
     res: Response
   ): Promise<Response> {
     const repository = new MongoCompanyRepository();
+
     const useCase = new ListCompaniesUseCase(repository);
 
     const companies = await useCase.execute();
@@ -53,6 +57,7 @@ export class CompanyController {
     res: Response
   ): Promise<Response> {
     const repository = new MongoCompanyRepository();
+
     const useCase = new UpdateCompanyUseCase(repository);
 
     const company = await useCase.execute(req.params.id, req.body);
@@ -64,6 +69,7 @@ export class CompanyController {
   async delete(req: Request<IdParams>, res: Response): Promise<Response> {
     const companyRepository = new MongoCompanyRepository();
     const employeeRepository = new MongoEmployeeRepository();
+
     const useCase = new DeleteCompanyUseCase(companyRepository, employeeRepository);
 
     await useCase.execute(req.params.id);

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { createAddressSchema, updateAddressSchema } from './addressSchemas';
+import { createEmployeeSchema } from './employeeSchemas';
 import isValidCNPJ from '../shared/utils/validateCNPJ';
 
 export const createCompanySchema = z.object({
@@ -14,6 +15,7 @@ export const createCompanySchema = z.object({
   ),
   address: createAddressSchema,
   phone: z.string().optional(),
+  firstEmployee: createEmployeeSchema.omit({ companyId: true }).optional(),
 });
 
 export const updateCompanySchema = z.object({
