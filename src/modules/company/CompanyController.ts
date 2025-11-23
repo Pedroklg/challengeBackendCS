@@ -18,13 +18,9 @@ export class CompanyController {
     const useCase = new CreateCompanyUseCase(repository);
 
     const company = await useCase.execute(req.body);
-    const companyResponse: CompanyResponseDTO = {
-      ...company,
-      id: company._id.toString(),
-      phone: company.phone ?? undefined,
-    };
+    const companyObj = company.toObject();
 
-    return res.status(201).json(companyResponse);
+    return res.status(201).json(companyObj);
   }
 
   async getById(req: Request<IdParams, CompanyResponseDTO>, res: Response): Promise<Response> {
@@ -32,13 +28,9 @@ export class CompanyController {
     const useCase = new GetCompanyUseCase(repository);
 
     const company = await useCase.execute(req.params.id);
-    const companyResponse: CompanyResponseDTO = {
-      ...company,
-      id: company._id.toString(),
-      phone: company.phone ?? undefined,
-    };
+    const companyObj = company.toObject();
 
-    return res.status(200).json(companyResponse);
+    return res.status(200).json(companyObj);
   }
 
   async list(
@@ -49,11 +41,9 @@ export class CompanyController {
     const useCase = new ListCompaniesUseCase(repository);
 
     const companies = await useCase.execute();
-    const companyResponses: CompanyResponseDTO[] = companies.map((company) => ({
-      ...company,
-      id: company._id.toString(),
-      phone: company.phone ?? undefined,
-    }));
+    const companyResponses: CompanyResponseDTO[] = companies.map((company) => {
+      return company.toObject();
+    });
 
     return res.status(200).json(companyResponses);
   }
@@ -66,13 +56,9 @@ export class CompanyController {
     const useCase = new UpdateCompanyUseCase(repository);
 
     const company = await useCase.execute(req.params.id, req.body);
-    const companyResponse: CompanyResponseDTO = {
-      ...company,
-      id: company._id.toString(),
-      phone: company.phone ?? undefined,
-    };
+    const companyObj = company.toObject();
 
-    return res.status(200).json(companyResponse);
+    return res.status(200).json(companyObj);
   }
 
   async delete(req: Request<IdParams>, res: Response): Promise<Response> {

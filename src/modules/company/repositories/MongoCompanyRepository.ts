@@ -1,10 +1,12 @@
 import { CompanyModel } from '../../../db/models/CompanyModel';
 import { CompanyRepository } from './CompanyRepository';
 import { CompanyDBCreateDTO, CompanyDBUpdateDTO, CompanyDBOutDTO } from './dto';
+import { normalizeCNPJ } from '../../../shared/utils/normalizeCNPJ';
 
 export class MongoCompanyRepository implements CompanyRepository {
   async create(company: CompanyDBCreateDTO): Promise<CompanyDBOutDTO> {
-    const createdCompany = await CompanyModel.create(company);
+    const normalizedCnpj = normalizeCNPJ(company.cnpj) ?? company.cnpj;
+    const createdCompany = await CompanyModel.create({ ...company, cnpj: normalizedCnpj });
 
     return createdCompany;
   }
@@ -16,7 +18,8 @@ export class MongoCompanyRepository implements CompanyRepository {
   }
 
   async findByCnpj(cnpj: string): Promise<CompanyDBOutDTO | null> {
-    const company = await CompanyModel.findOne({ cnpj });
+    const normalized = normalizeCNPJ(cnpj) ?? cnpj;
+    const company = await CompanyModel.findOne({ cnpj: normalized });
 
     return company ? company : null;
   }
@@ -28,9 +31,14 @@ export class MongoCompanyRepository implements CompanyRepository {
   }
 
   async update(id: string, data: CompanyDBUpdateDTO): Promise<CompanyDBOutDTO | null> {
+    const updatedData = { ...data };
+    if (updatedData.cnpj) {
+      updatedData.cnpj = normalizeCNPJ(updatedData.cnpj) ?? updatedData.cnpj;
+    }
+
     const company = await CompanyModel.findByIdAndUpdate(
       id,
-      { ...data, updatedAt: new Date() },
+      { ...updatedData, updatedAt: new Date() },
       { new: true }
     );
 

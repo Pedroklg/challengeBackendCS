@@ -1,6 +1,7 @@
 import { CompanyRepository } from './CompanyRepository';
 import { CompanyDBCreateDTO, CompanyDBUpdateDTO, CompanyDBOutDTO } from './dto';
 import { faker } from '@faker-js/faker';
+import { normalizeCNPJ } from '../../../shared/utils/normalizeCNPJ';
 
 export class InMemoryCompanyRepository implements CompanyRepository {
   private companies: CompanyDBOutDTO[] = [];
@@ -11,6 +12,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     const created = {
       ...company,
       _id: faker.string.uuid(),
+      cnpj: normalizeCNPJ(company.cnpj) ?? company.cnpj,
       createdAt: now,
       updatedAt: now,
     } as unknown as CompanyDBOutDTO;
@@ -27,7 +29,8 @@ export class InMemoryCompanyRepository implements CompanyRepository {
   }
 
   async findByCnpj(cnpj: string): Promise<CompanyDBOutDTO | null> {
-    const company = this.companies.find((company) => company.cnpj === cnpj);
+    const normalized = normalizeCNPJ(cnpj) ?? cnpj;
+    const company = this.companies.find((company) => company.cnpj === normalized);
 
     return company ? (company as CompanyDBOutDTO) : null;
   }
@@ -41,9 +44,14 @@ export class InMemoryCompanyRepository implements CompanyRepository {
 
     if (index === -1) return null;
 
+    const normalizedData = { ...data };
+    if (normalizedData.cnpj) {
+      normalizedData.cnpj = normalizeCNPJ(normalizedData.cnpj) ?? normalizedData.cnpj;
+    }
+
     const updated = {
       ...this.companies[index],
-      ...data,
+      ...normalizedData,
       updatedAt: new Date(),
     } as unknown as CompanyDBOutDTO;
 

@@ -2,6 +2,7 @@ import { AppError } from '../../../shared/AppError';
 import { CompanyRepository } from '../repositories/CompanyRepository';
 import { UpdateCompanyDTO } from '../types';
 import { CompanyDBOutDTO } from '../repositories/dto';
+import { normalizeCNPJ } from '../../../shared/utils/normalizeCNPJ';
 
 export class UpdateCompanyUseCase {
   constructor(private companyRepository: CompanyRepository) {}
@@ -13,10 +14,14 @@ export class UpdateCompanyUseCase {
       throw new AppError('Company not found', 404);
     }
 
-    if (data.cnpj && data.cnpj !== company.cnpj) {
-      const existingCompany = await this.companyRepository.findByCnpj(data.cnpj);
-      if (existingCompany) {
-        throw new AppError('Company with this CNPJ already exists', 409);
+    if (data.cnpj) {
+      const newCnpj = normalizeCNPJ(data.cnpj) ?? data.cnpj;
+
+      if (newCnpj !== company.cnpj) {
+        const existingCompany = await this.companyRepository.findByCnpj(newCnpj);
+        if (existingCompany) {
+          throw new AppError('Company with this CNPJ already exists', 409);
+        }
       }
     }
 

@@ -19,15 +19,9 @@ export class EmployeeController {
     const useCase = new CreateEmployeeUseCase(employeeRepository, companyRepository);
 
     const employee = await useCase.execute(req.body);
-    const employeeResponse: EmployeeResponseRequest = {
-      ...employee,
-      id: employee._id.toString(),
-      companyId: employee.companyId.toString(),
-      address: employee.address ?? undefined,
-      terminationDate: employee.terminationDate ?? undefined,
-    };
+    const employeeObj = employee.toObject();
 
-    return res.status(201).json(employeeResponse);
+    return res.status(201).json(employeeObj);
   }
 
   async getById(req: Request<IdParams, EmployeeResponseRequest>, res: Response): Promise<Response> {
@@ -35,15 +29,9 @@ export class EmployeeController {
     const useCase = new GetEmployeeUseCase(repository);
 
     const employee = await useCase.execute(req.params.id);
-    const employeeResponse: EmployeeResponseRequest = {
-      ...employee,
-      id: employee._id.toString(),
-      companyId: employee.companyId.toString(),
-      address: employee.address ?? undefined,
-      terminationDate: employee.terminationDate ?? undefined,
-    };
+    const employeeObj = employee.toObject();
 
-    return res.status(200).json(employeeResponse);
+    return res.status(200).json(employeeObj);
   }
 
   async listByCompany(
@@ -55,13 +43,9 @@ export class EmployeeController {
     const useCase = new ListEmployeesByCompanyUseCase(employeeRepository, companyRepository);
 
     const employees = await useCase.execute(req.params.companyId);
-    const employeesResponse: EmployeeResponseRequest[] = employees.map((employee) => ({
-      ...employee,
-      id: employee._id.toString(),
-      companyId: employee.companyId.toString(),
-      address: employee.address ?? undefined,
-      terminationDate: employee.terminationDate ?? undefined,
-    }));
+    const employeesResponse: EmployeeResponseRequest[] = employees.map((employee) => {
+      return employee.toObject();
+    });
 
     return res.status(200).json(employeesResponse);
   }
@@ -74,15 +58,9 @@ export class EmployeeController {
     const useCase = new UpdateEmployeeUseCase(repository);
 
     const employee = await useCase.execute(req.params.id, req.body);
-    const employeeResponse: EmployeeResponseRequest = {
-      ...employee,
-      id: employee._id.toString(),
-      companyId: employee.companyId.toString(),
-      address: employee.address ?? undefined,
-      terminationDate: employee.terminationDate ?? undefined,
-    };
+    const employeeObj = employee.toObject();
 
-    return res.status(200).json(employeeResponse);
+    return res.status(200).json(employeeObj);
   }
 
   async delete(req: Request<IdParams>, res: Response): Promise<Response> {
