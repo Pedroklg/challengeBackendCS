@@ -1,11 +1,14 @@
 import { Router } from 'express';
-import { EmployeeController } from '../controllers/EmployeeController';
+import { validate } from 'midlewares/validation';
+import { EmployeeController } from 'modules/employee/EmployeeController';
+import { createEmployeeSchema, updateEmployeeSchema } from 'validators/employeeSchemas';
 
 const employeeRoutes = Router();
 const controller = new EmployeeController();
 
 employeeRoutes.post(
   '/',
+  validate(createEmployeeSchema),
   (req, res, next) => controller.create(req, res).catch(next)
 );
 
@@ -21,6 +24,7 @@ employeeRoutes.get(
 
 employeeRoutes.put(
   '/:id',
+  validate(updateEmployeeSchema),
   (req, res, next) => controller.update(req, res).catch(next)
 );
 

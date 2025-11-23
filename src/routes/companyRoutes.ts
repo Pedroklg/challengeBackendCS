@@ -1,11 +1,14 @@
 import { Router } from 'express';
-import { CompanyController } from '../controllers/CompanyController';
+import { createCompanySchema, updateCompanySchema } from '../validators/companySchemas';
+import { validate } from 'midlewares/validation';
+import { CompanyController } from 'modules/company/CompanyController';
 
 const companyRoutes = Router();
 const controller = new CompanyController();
 
 companyRoutes.post(
   '/',
+  validate(createCompanySchema),
   (req, res, next) => controller.create(req, res).catch(next)
 );
 
@@ -21,6 +24,7 @@ companyRoutes.get(
 
 companyRoutes.put(
   '/:id',
+  validate(updateCompanySchema),
   (req, res, next) => controller.update(req, res).catch(next)
 );
 
