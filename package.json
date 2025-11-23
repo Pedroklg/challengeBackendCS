@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
     "build": "tsc",
-    "start": "node --env-file=.env dist/server.js",
+    "start": "node dist/server.js",
     "test": "jest --coverage",
     "test:watch": "jest --watchAll",
     "lint": "eslint --ext .ts,.js src",
