@@ -1,5 +1,3 @@
-export function normalizeCNPJ(cnpj?: string | null): string | undefined {
-  if (!cnpj || typeof cnpj !== 'string') return undefined;
-
+export function normalizeCNPJ(cnpj: string): string {
   return cnpj.replace(/[^\d]+/g, '');
 }

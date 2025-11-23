@@ -1,7 +1,7 @@
 import { AppError } from '../shared/AppError';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-export const errorHandler = (error: Error, _: Request, res: Response) => {
+export const errorHandler = (error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       status: 'error',

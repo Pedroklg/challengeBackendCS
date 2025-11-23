@@ -12,13 +12,13 @@ export class MongoEmployeeRepository implements EmployeeRepository {
   async findById(id: string): Promise<EmployeeDBOutDTO | null> {
     const employee = await EmployeeModel.findById(id);
 
-    return employee ? employee : null;
+    return employee ?? null;
   }
 
   async findByEmail(email: string): Promise<EmployeeDBOutDTO | null> {
     const employee = await EmployeeModel.findOne({ email });
 
-    return employee ? employee : null;
+    return employee ?? null;
   }
 
   async findByCompanyId(companyId: string): Promise<EmployeeDBOutDTO[]> {
@@ -40,7 +40,7 @@ export class MongoEmployeeRepository implements EmployeeRepository {
       { new: true }
     );
 
-    return employee ? employee : null;
+    return employee ?? null;
   }
 
   async delete(id: string): Promise<boolean> {

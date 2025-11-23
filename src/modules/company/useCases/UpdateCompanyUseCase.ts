@@ -15,10 +15,11 @@ export class UpdateCompanyUseCase {
     }
 
     if (data.cnpj) {
-      const newCnpj = normalizeCNPJ(data.cnpj) ?? data.cnpj;
+      const newCnpj = normalizeCNPJ(data.cnpj);
 
       if (newCnpj !== company.cnpj) {
         const existingCompany = await this.companyRepository.findByCnpj(newCnpj);
+
         if (existingCompany) {
           throw new AppError('Company with this CNPJ already exists', 409);
         }

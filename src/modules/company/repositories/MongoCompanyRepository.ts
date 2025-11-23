@@ -5,7 +5,7 @@ import { normalizeCNPJ } from '../../../shared/utils/normalizeCNPJ';
 
 export class MongoCompanyRepository implements CompanyRepository {
   async create(company: CompanyDBCreateDTO): Promise<CompanyDBOutDTO> {
-    const normalizedCnpj = normalizeCNPJ(company.cnpj) ?? company.cnpj;
+    const normalizedCnpj = normalizeCNPJ(company.cnpj);
     const createdCompany = await CompanyModel.create({ ...company, cnpj: normalizedCnpj });
 
     return createdCompany;
@@ -14,14 +14,14 @@ export class MongoCompanyRepository implements CompanyRepository {
   async findById(id: string): Promise<CompanyDBOutDTO | null> {
     const company = await CompanyModel.findById(id);
 
-    return company ? company : null;
+    return company ?? null;
   }
 
   async findByCnpj(cnpj: string): Promise<CompanyDBOutDTO | null> {
-    const normalized = normalizeCNPJ(cnpj) ?? cnpj;
+    const normalized = normalizeCNPJ(cnpj);
     const company = await CompanyModel.findOne({ cnpj: normalized });
 
-    return company ? company : null;
+    return company ?? null;
   }
 
   async findAll(): Promise<CompanyDBOutDTO[]> {
@@ -33,7 +33,7 @@ export class MongoCompanyRepository implements CompanyRepository {
   async update(id: string, data: CompanyDBUpdateDTO): Promise<CompanyDBOutDTO | null> {
     const updatedData = { ...data };
     if (updatedData.cnpj) {
-      updatedData.cnpj = normalizeCNPJ(updatedData.cnpj) ?? updatedData.cnpj;
+      updatedData.cnpj = normalizeCNPJ(updatedData.cnpj);
     }
 
     const company = await CompanyModel.findByIdAndUpdate(
@@ -42,7 +42,7 @@ export class MongoCompanyRepository implements CompanyRepository {
       { new: true }
     );
 
-    return company ? company : null;
+    return company ?? null;
   }
 
   async delete(id: string): Promise<boolean> {
