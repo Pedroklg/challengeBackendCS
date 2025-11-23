@@ -284,7 +284,7 @@ components:
           street: 'Avenida Paulista'
           number: '1000'
           zipcode: '01310100'
-          complement: null
+          complement: "string"
         phone: '+55 11 91234-5678'
         firstEmployee:
           name: 'John Doe'
