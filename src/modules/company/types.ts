@@ -3,7 +3,7 @@ import { CreateEmployeeRequest } from '../employee/types';
 
 export type CompanyAddress = Address;
 
-export interface CreateCompanyDTO {
+export interface CreateCompanyRequest {
   name: string;
   sector: string;
   cnpj: string;
@@ -12,9 +12,9 @@ export interface CreateCompanyDTO {
   firstEmployee?: Omit<CreateEmployeeRequest, 'companyId'>;
 }
 
-export type UpdateCompanyDTO = Partial<CreateCompanyDTO>;
+export type UpdateCompanyRequest = Partial<CreateCompanyRequest>;
 
-export interface CompanyResponseDTO extends CreateCompanyDTO {
+export interface CompanyResponse extends CreateCompanyRequest {
   id: string;
   createdAt: Date;
   updatedAt: Date;

@@ -6,12 +6,12 @@ import { DeleteEmployeeUseCase } from './useCases/DeleteEmployeeUseCase';
 import { ListEmployeesByCompanyUseCase } from './useCases/ListEmployeesByCompanyUseCase';
 import { MongoEmployeeRepository } from './repositories/MongoEmployeeRepository';
 import { MongoCompanyRepository } from '../company/repositories/MongoCompanyRepository';
-import { CreateEmployeeRequest, UpdateEmployeeRequest, EmployeeResponseRequest } from './types';
-import { CompanyIdParams, IdParams } from '../../shared/types';
+import { CreateEmployeeRequest, UpdateEmployeeRequest, EmployeeResponse } from './types';
+import { CompanyIdParams, IdParams, NoParams } from '../../shared/types';
 
 export class EmployeeController {
   async create(
-    req: Request<Record<string, never>, EmployeeResponseRequest, CreateEmployeeRequest>,
+    req: Request<NoParams, EmployeeResponse, CreateEmployeeRequest>,
     res: Response
   ): Promise<Response> {
     const employeeRepository = new MongoEmployeeRepository();
@@ -25,7 +25,7 @@ export class EmployeeController {
     return res.status(201).json(employeeObj);
   }
 
-  async getById(req: Request<IdParams, EmployeeResponseRequest>, res: Response): Promise<Response> {
+  async getById(req: Request<IdParams, EmployeeResponse>, res: Response): Promise<Response> {
     const repository = new MongoEmployeeRepository();
 
     const useCase = new GetEmployeeUseCase(repository);
@@ -37,7 +37,7 @@ export class EmployeeController {
   }
 
   async listByCompany(
-    req: Request<CompanyIdParams, EmployeeResponseRequest[]>,
+    req: Request<CompanyIdParams, EmployeeResponse[]>,
     res: Response
   ): Promise<Response> {
     const employeeRepository = new MongoEmployeeRepository();
@@ -47,7 +47,7 @@ export class EmployeeController {
 
     const employees = await useCase.execute(req.params.companyId);
 
-    const employeesResponse: EmployeeResponseRequest[] = employees.map((employee) => {
+    const employeesResponse: EmployeeResponse[] = employees.map((employee) => {
       return employee.toObject();
     });
 
@@ -55,7 +55,7 @@ export class EmployeeController {
   }
 
   async update(
-    req: Request<IdParams, EmployeeResponseRequest, UpdateEmployeeRequest>,
+    req: Request<IdParams, EmployeeResponse, UpdateEmployeeRequest>,
     res: Response
   ): Promise<Response> {
     const repository = new MongoEmployeeRepository();

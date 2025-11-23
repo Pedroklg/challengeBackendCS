@@ -14,7 +14,7 @@ export interface CreateEmployeeRequest {
 
 export type UpdateEmployeeRequest = Partial<CreateEmployeeRequest>;
 
-export interface EmployeeResponseRequest extends Omit<CreateEmployeeRequest, 'password'> {
+export interface EmployeeResponse extends Omit<CreateEmployeeRequest, 'password'> {
   id: string;
   createdAt: Date;
   updatedAt: Date;

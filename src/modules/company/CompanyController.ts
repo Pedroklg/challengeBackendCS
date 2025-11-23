@@ -6,12 +6,12 @@ import { DeleteCompanyUseCase } from './useCases/DeleteCompanyUseCase';
 import { ListCompaniesUseCase } from './useCases/ListCompaniesUseCase';
 import { MongoCompanyRepository } from './repositories/MongoCompanyRepository';
 import { MongoEmployeeRepository } from '../employee/repositories/MongoEmployeeRepository';
-import { CreateCompanyDTO, UpdateCompanyDTO, CompanyResponseDTO } from './types';
-import { IdParams } from '../../shared/types';
+import { CreateCompanyRequest, UpdateCompanyRequest, CompanyResponse } from './types';
+import { IdParams, NoParams } from '../../shared/types';
 
 export class CompanyController {
   async create(
-    req: Request<Record<string, never>, CompanyResponseDTO, CreateCompanyDTO>,
+    req: Request<NoParams, CompanyResponse, CreateCompanyRequest>,
     res: Response
   ): Promise<Response> {
     const repository = new MongoCompanyRepository();
@@ -25,7 +25,7 @@ export class CompanyController {
     return res.status(201).json(companyObj);
   }
 
-  async getById(req: Request<IdParams, CompanyResponseDTO>, res: Response): Promise<Response> {
+  async getById(req: Request<IdParams, CompanyResponse>, res: Response): Promise<Response> {
     const repository = new MongoCompanyRepository();
 
     const useCase = new GetCompanyUseCase(repository);
@@ -36,16 +36,13 @@ export class CompanyController {
     return res.status(200).json(companyObj);
   }
 
-  async list(
-    _req: Request<Record<string, never>, CompanyResponseDTO[]>,
-    res: Response
-  ): Promise<Response> {
+  async list(_req: Request<NoParams, CompanyResponse[]>, res: Response): Promise<Response> {
     const repository = new MongoCompanyRepository();
 
     const useCase = new ListCompaniesUseCase(repository);
 
     const companies = await useCase.execute();
-    const companyResponses: CompanyResponseDTO[] = companies.map((company) => {
+    const companyResponses: CompanyResponse[] = companies.map((company) => {
       return company.toObject();
     });
 
@@ -53,7 +50,7 @@ export class CompanyController {
   }
 
   async update(
-    req: Request<IdParams, CompanyResponseDTO, UpdateCompanyDTO>,
+    req: Request<IdParams, CompanyResponse, UpdateCompanyRequest>,
     res: Response
   ): Promise<Response> {
     const repository = new MongoCompanyRepository();

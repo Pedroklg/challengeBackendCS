@@ -3,7 +3,7 @@ import { InMemoryCompanyRepository } from '../../company/repositories/InMemoryCo
 import { EmployeeDBCreateDTO } from '../repositories/dto';
 import { CompanyDBCreateDTO } from '../../company/repositories/dto';
 import { CreateEmployeeRequest } from '../types';
-import { CreateCompanyDTO } from '../../company/types';
+import { CreateCompanyRequest } from '../../company/types';
 import { faker } from '@faker-js/faker';
 import { ActivityStatus } from 'shared/types';
 import { makeFakeCompanyData } from '../../company/tests/utils';
@@ -31,7 +31,7 @@ export const makeFakeEmployeeData = (
 
 export const insertCompany = async (
   companyRepo: InMemoryCompanyRepository,
-  overrides: Partial<CreateCompanyDTO> = {}
+  overrides: Partial<CreateCompanyRequest> = {}
 ) => {
   const data = makeFakeCompanyData(overrides);
 

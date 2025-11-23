@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { InMemoryCompanyRepository } from '../repositories/InMemoryCompanyRepository';
 import { CompanyDBCreateDTO } from '../repositories/dto';
-import { CreateCompanyDTO } from '../types';
+import { CreateCompanyRequest } from '../types';
 
 export const makeFakeCompanyData = (
-  overrides: Partial<CreateCompanyDTO> = {}
-): CreateCompanyDTO => ({
+  overrides: Partial<CreateCompanyRequest> = {}
+): CreateCompanyRequest => ({
   name: faker.company.name(),
   sector: faker.company.buzzPhrase(),
   cnpj: faker.finance.accountNumber(14),
@@ -23,7 +23,7 @@ export const makeFakeCompanyData = (
 
 export const insertCompany = async (
   repo: InMemoryCompanyRepository,
-  overrides: Partial<CreateCompanyDTO> = {}
+  overrides: Partial<CreateCompanyRequest> = {}
 ) => {
   const data = makeFakeCompanyData(overrides);
 

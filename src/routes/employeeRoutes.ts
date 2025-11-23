@@ -5,33 +5,30 @@ import { createEmployeeSchema, updateEmployeeSchema } from '../validators/employ
 import {
   CreateEmployeeRequest,
   UpdateEmployeeRequest,
-  EmployeeResponseRequest,
+  EmployeeResponse,
 } from '../modules/employee/types';
-import { CompanyIdParams, IdParams } from '../shared/types';
+import { CompanyIdParams, IdParams, NoParams } from '../shared/types';
 
 const employeeRoutes = Router();
 const controller = new EmployeeController();
 
-employeeRoutes.post<Record<string, never>, EmployeeResponseRequest, CreateEmployeeRequest>(
+employeeRoutes.post<NoParams, EmployeeResponse, CreateEmployeeRequest>(
   '/',
-  validate<CreateEmployeeRequest, Record<string, never>, EmployeeResponseRequest>(
-    createEmployeeSchema
-  ),
+  validate<CreateEmployeeRequest, NoParams, EmployeeResponse>(createEmployeeSchema),
   (req, res, next) => controller.create(req, res).catch(next)
 );
 
-employeeRoutes.get<CompanyIdParams, EmployeeResponseRequest[]>(
-  '/company/:companyId',
-  (req, res, next) => controller.listByCompany(req, res).catch(next)
+employeeRoutes.get<CompanyIdParams, EmployeeResponse[]>('/company/:companyId', (req, res, next) =>
+  controller.listByCompany(req, res).catch(next)
 );
 
-employeeRoutes.get<IdParams, EmployeeResponseRequest>('/:id', (req, res, next) =>
+employeeRoutes.get<IdParams, EmployeeResponse>('/:id', (req, res, next) =>
   controller.getById(req, res).catch(next)
 );
 
-employeeRoutes.put<IdParams, EmployeeResponseRequest, UpdateEmployeeRequest>(
+employeeRoutes.put<IdParams, EmployeeResponse, UpdateEmployeeRequest>(
   '/:id',
-  validate<UpdateEmployeeRequest, IdParams, EmployeeResponseRequest>(updateEmployeeSchema),
+  validate<UpdateEmployeeRequest, IdParams, EmployeeResponse>(updateEmployeeSchema),
   (req, res, next) => controller.update(req, res).catch(next)
 );
 
