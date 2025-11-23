@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { routes } from 'routes';
+import { routes } from './routes';
+import { errorHandler } from './midlewares/errorHandler';
 
 const app = express();
 
@@ -12,5 +13,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api', routes);
+
+app.use(errorHandler);
 
 export { app };

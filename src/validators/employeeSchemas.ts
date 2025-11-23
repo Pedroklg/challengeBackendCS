@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { createAddressSchema, updateAddressSchema } from './addressSchemas';
+import { ActivityStatus } from '../shared/types';
 
 export const createEmployeeSchema = z.object({
   companyId: z.string().min(1, 'Company ID is required'),
@@ -7,10 +8,9 @@ export const createEmployeeSchema = z.object({
   email: z.email('Invalid email format'),
   position: z.string().min(2, 'Position must have at least 2 characters'),
   password: z.string().min(6, 'Password must have at least 6 characters'),
-  status: z.enum(['ativo', 'inativo']).optional(),
-  terminationDate: z.iso.datetime().optional()
-  ,
-  address: createAddressSchema.optional()
+  status: z.enum(ActivityStatus).optional(),
+  terminationDate: z.iso.datetime().optional(),
+  address: createAddressSchema.optional(),
 });
 
 export const updateEmployeeSchema = z.object({
@@ -18,8 +18,7 @@ export const updateEmployeeSchema = z.object({
   email: z.email().optional(),
   position: z.string().min(2).optional(),
   password: z.string().min(6).optional(),
-  status: z.enum(['ativo', 'inativo']).optional(),
-  terminationDate: z.iso.datetime().optional()
-  ,
-  address: updateAddressSchema.optional()
+  status: z.enum(ActivityStatus).optional(),
+  terminationDate: z.iso.datetime().optional(),
+  address: updateAddressSchema.optional(),
 });

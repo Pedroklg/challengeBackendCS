@@ -6,7 +6,7 @@ export const createAddressSchema = z.object({
   street: z.string().optional(),
   number: z.string().optional(),
   zipcode: z.string().optional(),
-  complement: z.string().optional()
+  complement: z.string().optional(),
 });
 
 export const updateAddressSchema = z.object({
@@ -15,5 +15,5 @@ export const updateAddressSchema = z.object({
   street: z.string().optional(),
   number: z.string().optional(),
   zipcode: z.string().optional(),
-  complement: z.string().optional()
+  complement: z.string().optional(),
 });

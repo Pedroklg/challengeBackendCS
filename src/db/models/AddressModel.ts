@@ -3,10 +3,10 @@ import { Schema } from 'mongoose';
 export interface Address {
   state: string;
   city: string;
-  street?: string;
-  number?: string;
-  zipcode?: string;
-  complement?: string;
+  street?: string | null;
+  number?: string | null;
+  zipcode?: string | null;
+  complement?: string | null;
 }
 
 export const AddressSchema = new Schema(
@@ -16,7 +16,7 @@ export const AddressSchema = new Schema(
     street: { type: String },
     number: { type: String },
     zipcode: { type: String },
-    complement: { type: String }
+    complement: { type: String },
   },
   { _id: false }
 );

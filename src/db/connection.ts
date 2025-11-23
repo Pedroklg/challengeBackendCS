@@ -4,8 +4,7 @@ export const connectDatabase = async (): Promise<void> => {
   const mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri) {
-    console.log('Missing env variables');
-    return;
+    throw new Error('Missing env variables');
   }
 
   try {

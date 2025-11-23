@@ -6,7 +6,7 @@ export interface CompanyDocument extends Document {
   sector: string;
   cnpj: string;
   address: Address;
-  phone?: string;
+  phone?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,10 +17,10 @@ const CompanySchema = new Schema(
     sector: { type: String, required: true },
     cnpj: { type: String, required: true, unique: true },
     address: { type: AddressSchema, required: true },
-    phone: { type: String }
+    phone: { type: String },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
