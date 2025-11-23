@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { CreateEmployeeUseCase } from './use-cases/CreateEmployeeUseCase';
-import { GetEmployeeUseCase } from './use-cases/GetEmployeeUseCase';
-import { UpdateEmployeeUseCase } from './use-cases/UpdateEmployeeUseCase';
-import { DeleteEmployeeUseCase } from './use-cases/DeleteEmployeeUseCase';
-import { ListEmployeesByCompanyUseCase } from './use-cases/ListEmployeesByCompanyUseCase';
+import { CreateEmployeeUseCase } from './useCases/CreateEmployeeUseCase';
+import { GetEmployeeUseCase } from './useCases/GetEmployeeUseCase';
+import { UpdateEmployeeUseCase } from './useCases/UpdateEmployeeUseCase';
+import { DeleteEmployeeUseCase } from './useCases/DeleteEmployeeUseCase';
+import { ListEmployeesByCompanyUseCase } from './useCases/ListEmployeesByCompanyUseCase';
 import { MongoEmployeeRepository } from './repositories/MongoEmployeeRepository';
 import { MongoCompanyRepository } from 'modules/company/repositories/MongoCompanyRepository';
 
