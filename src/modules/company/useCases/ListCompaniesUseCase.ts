@@ -5,7 +5,7 @@ export class ListCompaniesUseCase {
   constructor(private companyRepository: CompanyRepository) {}
 
   async execute(): Promise<CompanyResponse[]> {
-    const companies = this.companyRepository.findAll();
+    const companies = await this.companyRepository.findAll();
 
     return companies;
   }
