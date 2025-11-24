@@ -27,7 +27,7 @@ API para gerir empresas e funcionários - Desenvolvedor Web Backend
      ```sh
      cp .env.example .env
      ```
-     Edite [`.env.example`](.env.example) conforme necessário.
+     Edite o `.env` conforme necessário.
    - Instalar dependências:
      ```sh
      npm install
