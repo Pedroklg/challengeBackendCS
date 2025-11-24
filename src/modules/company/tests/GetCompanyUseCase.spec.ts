@@ -10,10 +10,10 @@ describe('GetCompanyUseCase', () => {
 
     const created = await repo.create(makeFakeCompanyData());
 
-    const company = await useCase.execute(created._id.toString());
+    const company = await useCase.execute(created.id);
 
     expect(company).toBeTruthy();
-    expect(company._id).toBe(created._id);
+    expect(company.id).toBe(created.id);
   });
 
   it('should throw when company is not found', async () => {

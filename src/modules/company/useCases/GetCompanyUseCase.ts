@@ -1,11 +1,11 @@
 import { AppError } from '../../../shared/AppError';
 import { CompanyRepository } from '../repositories/CompanyRepository';
-import { CompanyDBOutDTO } from '../repositories/dto';
+import { CompanyResponse } from '../types';
 
 export class GetCompanyUseCase {
   constructor(private companyRepository: CompanyRepository) {}
 
-  async execute(id: string): Promise<CompanyDBOutDTO> {
+  async execute(id: string): Promise<CompanyResponse> {
     const company = await this.companyRepository.findById(id);
 
     if (!company) {

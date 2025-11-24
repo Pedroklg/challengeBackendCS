@@ -1,13 +1,12 @@
 import { AppError } from '../../../shared/AppError';
 import { CompanyRepository } from '../repositories/CompanyRepository';
-import { UpdateCompanyRequest } from '../types';
-import { CompanyDBOutDTO } from '../repositories/dto';
+import { UpdateCompanyRequest, CompanyResponse } from '../types';
 import { normalizeCNPJ } from '../../../shared/utils/normalizeCNPJ';
 
 export class UpdateCompanyUseCase {
   constructor(private companyRepository: CompanyRepository) {}
 
-  async execute(id: string, data: UpdateCompanyRequest): Promise<CompanyDBOutDTO> {
+  async execute(id: string, data: UpdateCompanyRequest): Promise<CompanyResponse> {
     const company = await this.companyRepository.findById(id);
 
     if (!company) {

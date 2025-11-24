@@ -10,64 +10,49 @@ import { CreateCompanyRequest, UpdateCompanyRequest, CompanyResponse } from './t
 import { IdParams, NoParams } from '../../shared/types';
 
 export class CompanyController {
+  private readonly companyRepository = new MongoCompanyRepository();
+  private readonly employeeRepository = new MongoEmployeeRepository();
+
   async create(
     req: Request<NoParams, CompanyResponse, CreateCompanyRequest>,
     res: Response
   ): Promise<Response> {
-    const repository = new MongoCompanyRepository();
-    const employeeRepository = new MongoEmployeeRepository();
-
-    const useCase = new CreateCompanyUseCase(repository, employeeRepository);
+    const useCase = new CreateCompanyUseCase(this.companyRepository, this.employeeRepository);
 
     const company = await useCase.execute(req.body);
-    const companyObj = company.toObject();
 
-    return res.status(201).json(companyObj);
+    return res.status(201).json(company);
   }
 
   async getById(req: Request<IdParams, CompanyResponse>, res: Response): Promise<Response> {
-    const repository = new MongoCompanyRepository();
-
-    const useCase = new GetCompanyUseCase(repository);
+    const useCase = new GetCompanyUseCase(this.companyRepository);
 
     const company = await useCase.execute(req.params.id);
-    const companyObj = company.toObject();
 
-    return res.status(200).json(companyObj);
+    return res.status(200).json(company);
   }
 
   async list(_req: Request<NoParams, CompanyResponse[]>, res: Response): Promise<Response> {
-    const repository = new MongoCompanyRepository();
-
-    const useCase = new ListCompaniesUseCase(repository);
+    const useCase = new ListCompaniesUseCase(this.companyRepository);
 
     const companies = await useCase.execute();
-    const companyResponses: CompanyResponse[] = companies.map((company) => {
-      return company.toObject();
-    });
 
-    return res.status(200).json(companyResponses);
+    return res.status(200).json(companies);
   }
 
   async update(
     req: Request<IdParams, CompanyResponse, UpdateCompanyRequest>,
     res: Response
   ): Promise<Response> {
-    const repository = new MongoCompanyRepository();
-
-    const useCase = new UpdateCompanyUseCase(repository);
+    const useCase = new UpdateCompanyUseCase(this.companyRepository);
 
     const company = await useCase.execute(req.params.id, req.body);
-    const companyObj = company.toObject();
 
-    return res.status(200).json(companyObj);
+    return res.status(200).json(company);
   }
 
   async delete(req: Request<IdParams>, res: Response): Promise<Response> {
-    const companyRepository = new MongoCompanyRepository();
-    const employeeRepository = new MongoEmployeeRepository();
-
-    const useCase = new DeleteCompanyUseCase(companyRepository, employeeRepository);
+    const useCase = new DeleteCompanyUseCase(this.companyRepository, this.employeeRepository);
 
     await useCase.execute(req.params.id);
 

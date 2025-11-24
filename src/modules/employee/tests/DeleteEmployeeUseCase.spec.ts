@@ -13,8 +13,8 @@ describe('DeleteEmployeeUseCase', () => {
     await insertCompany(companyRepo);
     const created = await insertEmployee(employeeRepo, companyRepo);
 
-    await expect(useCase.execute(created._id.toString())).resolves.toBeUndefined();
-    const found = await employeeRepo.findById(created._id.toString());
+    await expect(useCase.execute(created.id)).resolves.toBeUndefined();
+    const found = await employeeRepo.findById(created.id);
     expect(found).toBeNull();
   });
 

@@ -1,23 +1,28 @@
-import { EmployeeDocument } from '../../../db/models/EmployeeModel';
+import { Address } from '../../../db/models/AddressModel';
+import { ActivityStatus } from '../../../shared/types';
 
-export type EmployeeDBCreateDTO = Omit<
-  Pick<
-    EmployeeDocument,
-    | 'companyId'
-    | 'name'
-    | 'email'
-    | 'position'
-    | 'password'
-    | 'status'
-    | 'terminationDate'
-    | 'address'
-  >,
-  'companyId' | 'status'
-> & {
-  companyId: string | EmployeeDocument['companyId'];
-  status?: EmployeeDocument['status'];
+export type EmployeeDBCreateDTO = {
+  companyId: string;
+  name: string;
+  email: string;
+  position: string;
+  password: string;
+  status: ActivityStatus;
+  terminationDate?: Date;
+  address?: Address;
 };
 
 export type EmployeeDBUpdateDTO = Partial<EmployeeDBCreateDTO>;
 
-export type EmployeeDBOutDTO = EmployeeDocument;
+export type EmployeeDBOutDTO = {
+  id: string;
+  companyId: string;
+  name: string;
+  email: string;
+  position: string;
+  status: ActivityStatus;
+  terminationDate?: Date;
+  address?: Address;
+  createdAt: Date;
+  updatedAt: Date;
+};

@@ -13,10 +13,10 @@ describe('GetEmployeeUseCase', () => {
     await insertCompany(companyRepo);
     const created = await insertEmployee(employeeRepo, companyRepo);
 
-    const employee = await useCase.execute(created._id.toString());
+    const employee = await useCase.execute(created.id);
 
     expect(employee).toBeTruthy();
-    expect(employee._id).toBe(created._id);
+    expect(employee.id).toBe(created.id);
   });
 
   it('should throw when employee not found', async () => {

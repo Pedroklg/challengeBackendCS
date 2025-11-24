@@ -2,8 +2,7 @@ import { CompanyRepository } from 'modules/company/repositories/CompanyRepositor
 import { EmployeeRepository } from '../repositories/EmployeeRepository';
 import { AppError } from '../../../shared/AppError';
 import { hashPassword } from '../../../shared/utils/hashPassword';
-import { CreateEmployeeRequest } from '../types';
-import { EmployeeDBOutDTO } from '../repositories/dto';
+import { CreateEmployeeRequest, EmployeeResponse } from '../types';
 
 export class CreateEmployeeUseCase {
   constructor(
@@ -11,7 +10,7 @@ export class CreateEmployeeUseCase {
     private companyRepository: CompanyRepository
   ) {}
 
-  async execute(data: CreateEmployeeRequest): Promise<EmployeeDBOutDTO> {
+  async execute(data: CreateEmployeeRequest): Promise<EmployeeResponse> {
     const company = await this.companyRepository.findById(data.companyId);
 
     if (!company) {
@@ -26,6 +25,8 @@ export class CreateEmployeeUseCase {
 
     const hashedPassword = await hashPassword(data.password);
 
-    return this.employeeRepository.create({ ...data, password: hashedPassword });
+    const created = await this.employeeRepository.create({ ...data, password: hashedPassword });
+
+    return created;
   }
 }

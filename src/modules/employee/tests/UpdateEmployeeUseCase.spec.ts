@@ -13,7 +13,7 @@ describe('UpdateEmployeeUseCase', () => {
     await insertCompany(companyRepo);
     const created = await insertEmployee(employeeRepo, companyRepo);
 
-    const updated = await useCase.execute(created._id.toString(), { name: 'New Name' });
+    const updated = await useCase.execute(created.id, { name: 'New Name' });
 
     expect(updated).toBeTruthy();
     expect(updated.name).toBe('New Name');
@@ -35,13 +35,13 @@ describe('UpdateEmployeeUseCase', () => {
     const useCase = new UpdateEmployeeUseCase(employeeRepo);
 
     await insertCompany(companyRepo);
-    const e1 = await insertEmployee(employeeRepo, companyRepo);
-    const e2 = await insertEmployee(employeeRepo, companyRepo);
+    const emplyee1 = await insertEmployee(employeeRepo, companyRepo);
+    const emplyee2 = await insertEmployee(employeeRepo, companyRepo);
 
-    await expect(useCase.execute(e2._id.toString(), { email: e1.email })).rejects.toBeInstanceOf(
+    await expect(useCase.execute(emplyee2.id, { email: emplyee1.email })).rejects.toBeInstanceOf(
       AppError
     );
-    await expect(useCase.execute(e2._id.toString(), { email: e1.email })).rejects.toThrow(
+    await expect(useCase.execute(emplyee2.id, { email: emplyee1.email })).rejects.toThrow(
       'Employee with this email already exists'
     );
   });

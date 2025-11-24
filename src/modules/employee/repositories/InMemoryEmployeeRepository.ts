@@ -9,12 +9,12 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
     const now = new Date();
 
     const created = {
+      id: faker.string.uuid(),
       ...employee,
-      _id: faker.string.uuid(),
       companyId: employee.companyId,
       createdAt: now,
       updatedAt: now,
-    } as unknown as EmployeeDBOutDTO;
+    };
 
     this.employees.push(created);
 
@@ -22,19 +22,19 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
   }
 
   async findById(id: string): Promise<EmployeeDBOutDTO | null> {
-    const employee = this.employees.find((e) => e._id.toString() === id);
+    const employee = this.employees.find((employee) => employee.id === id);
 
     return employee ?? null;
   }
 
   async findByEmail(email: string): Promise<EmployeeDBOutDTO | null> {
-    const employee = this.employees.find((e) => e.email === email);
+    const employee = this.employees.find((employee) => employee.email === email);
 
     return employee ?? null;
   }
 
   async findByCompanyId(companyId: string): Promise<EmployeeDBOutDTO[]> {
-    return this.employees.filter((e) => e.companyId?.toString() === companyId);
+    return this.employees.filter((employee) => employee.companyId?.toString() === companyId);
   }
 
   async findAll(): Promise<EmployeeDBOutDTO[]> {
@@ -42,7 +42,7 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
   }
 
   async update(id: string, data: EmployeeDBUpdateDTO): Promise<EmployeeDBOutDTO | null> {
-    const index = this.employees.findIndex((e) => e._id.toString() === id);
+    const index = this.employees.findIndex((employee) => employee.id === id);
 
     if (index === -1) return null;
 
@@ -50,7 +50,7 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
       ...this.employees[index],
       ...data,
       updatedAt: new Date(),
-    } as EmployeeDBOutDTO;
+    };
 
     this.employees[index] = updated;
 
@@ -58,7 +58,7 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-    const index = this.employees.findIndex((e) => e._id.toString() === id);
+    const index = this.employees.findIndex((employee) => employee.id === id);
 
     if (index === -1) return false;
 

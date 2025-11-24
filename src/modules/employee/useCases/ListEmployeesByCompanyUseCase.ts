@@ -1,7 +1,7 @@
 import { CompanyRepository } from 'modules/company/repositories/CompanyRepository';
 import { EmployeeRepository } from '../repositories/EmployeeRepository';
 import { AppError } from '../../../shared/AppError';
-import { EmployeeDBOutDTO } from '../repositories/dto';
+import { EmployeeResponse } from '../types';
 
 export class ListEmployeesByCompanyUseCase {
   constructor(
@@ -9,13 +9,15 @@ export class ListEmployeesByCompanyUseCase {
     private companyRepository: CompanyRepository
   ) {}
 
-  async execute(companyId: string): Promise<EmployeeDBOutDTO[]> {
+  async execute(companyId: string): Promise<EmployeeResponse[]> {
     const company = await this.companyRepository.findById(companyId);
 
     if (!company) {
       throw new AppError('Company not found', 404);
     }
 
-    return this.employeeRepository.findByCompanyId(companyId);
+    const employees = await this.employeeRepository.findByCompanyId(companyId);
+
+    return employees;
   }
 }

@@ -10,10 +10,10 @@ describe('ListEmployeesByCompanyUseCase', () => {
     const useCase = new ListEmployeesByCompanyUseCase(employeeRepo, companyRepo);
 
     const company = await insertCompany(companyRepo);
-    await insertEmployee(employeeRepo, companyRepo, { companyId: company._id.toString() });
-    await insertEmployee(employeeRepo, companyRepo, { companyId: company._id.toString() });
+    await insertEmployee(employeeRepo, companyRepo, { companyId: company.id });
+    await insertEmployee(employeeRepo, companyRepo, { companyId: company.id });
 
-    const employees = await useCase.execute(company._id.toString());
+    const employees = await useCase.execute(company.id);
 
     expect(employees.length).toBe(2);
   });

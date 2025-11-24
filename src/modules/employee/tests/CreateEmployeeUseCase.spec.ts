@@ -13,12 +13,11 @@ describe('CreateEmployeeUseCase', () => {
     const useCase = new CreateEmployeeUseCase(employeeRepo, companyRepo);
 
     const company = await insertCompany(companyRepo);
-    const dto = makeFakeEmployeeData(company._id.toString());
+    const dto = makeFakeEmployeeData(company.id);
     const created = await useCase.execute(dto);
 
-    expect(created).toHaveProperty('_id');
+    expect(created).toHaveProperty('id');
     expect(created.email).toBe(dto.email);
-    expect(created.password).not.toBe(dto.password);
   });
 
   it('should throw when company is not found', async () => {
@@ -38,7 +37,7 @@ describe('CreateEmployeeUseCase', () => {
     const useCase = new CreateEmployeeUseCase(employeeRepo, companyRepo);
 
     const company = await insertCompany(companyRepo);
-    const dto = makeFakeEmployeeData(company._id.toString());
+    const dto = makeFakeEmployeeData(company.id);
 
     const existing: EmployeeDBCreateDTO = { ...dto, password: 'otherPassword' };
     await employeeRepo.create(existing);

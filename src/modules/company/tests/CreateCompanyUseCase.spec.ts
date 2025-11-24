@@ -3,6 +3,7 @@ import { InMemoryEmployeeRepository } from '../../employee/repositories/InMemory
 import { CreateCompanyUseCase } from '../useCases/CreateCompanyUseCase';
 import { AppError } from '../../../shared/AppError';
 import { makeFakeCompanyData } from './utils';
+import { ActivityStatus } from 'shared/types';
 
 describe('CreateCompanyUseCase', () => {
   it('should create a company successfully', async () => {
@@ -12,7 +13,7 @@ describe('CreateCompanyUseCase', () => {
     const dto = makeFakeCompanyData();
     const created = await useCase.execute(dto);
 
-    expect(created).toHaveProperty('_id');
+    expect(created).toHaveProperty('id');
     expect(created.name).toBe(dto.name);
     expect(created.cnpj).toBe(dto.cnpj);
   });
@@ -39,17 +40,15 @@ describe('CreateCompanyUseCase', () => {
         email: `john.doe.${Date.now()}@example.com`,
         position: 'Engineer',
         password: 'Password123!',
-        status: undefined,
-        terminationDate: undefined,
-        address: undefined,
+        status: ActivityStatus.ACTIVE,
       },
     });
 
     const createdCompany = await useCase.execute(fakeCompany);
 
-    expect(createdCompany).toHaveProperty('_id');
+    expect(createdCompany).toHaveProperty('id');
 
-    const employees = await employeeRepo.findByCompanyId(createdCompany._id.toString());
+    const employees = await employeeRepo.findByCompanyId(createdCompany.id);
 
     expect(employees.length).toBe(1);
     expect(employees[0].email).toBe(fakeCompany.firstEmployee?.email);

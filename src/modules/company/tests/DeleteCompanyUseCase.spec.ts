@@ -13,8 +13,8 @@ describe('DeleteCompanyUseCase', () => {
 
     const company = await companyRepo.create(makeFakeCompanyData());
 
-    await expect(useCase.execute(company._id.toString())).resolves.toBeUndefined();
-    const found = await companyRepo.findById(company._id.toString());
+    await expect(useCase.execute(company.id)).resolves.toBeUndefined();
+    const found = await companyRepo.findById(company.id);
     expect(found).toBeNull();
   });
 
@@ -34,15 +34,15 @@ describe('DeleteCompanyUseCase', () => {
 
     const company = await insertCompany(companyRepo);
     await insertEmployee(employeeRepo, companyRepo, {
-      companyId: company._id.toString(),
+      companyId: company.id,
       name: 'John Doe',
       email: 'john@example.com',
       position: 'Dev',
       password: 'Password123!',
     });
 
-    await expect(useCase.execute(company._id.toString())).rejects.toBeInstanceOf(AppError);
-    await expect(useCase.execute(company._id.toString())).rejects.toThrow(
+    await expect(useCase.execute(company.id)).rejects.toBeInstanceOf(AppError);
+    await expect(useCase.execute(company.id)).rejects.toThrow(
       'Cannot delete company with active employees'
     );
   });

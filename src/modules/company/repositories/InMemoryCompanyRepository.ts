@@ -10,12 +10,13 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     const now = new Date();
 
     const created = {
+      id: faker.string.uuid(),
       ...company,
-      _id: faker.string.uuid(),
+      phone: company.phone ?? undefined,
       cnpj: normalizeCNPJ(company.cnpj),
       createdAt: now,
       updatedAt: now,
-    } as unknown as CompanyDBOutDTO;
+    };
 
     this.companies.push(created);
 
@@ -23,7 +24,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
   }
 
   async findById(id: string): Promise<CompanyDBOutDTO | null> {
-    const company = this.companies.find((company) => company._id.toString() === id);
+    const company = this.companies.find((company) => company.id === id);
 
     return company ?? null;
   }
@@ -40,7 +41,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
   }
 
   async update(id: string, data: CompanyDBUpdateDTO): Promise<CompanyDBOutDTO | null> {
-    const index = this.companies.findIndex((company) => company._id.toString() === id);
+    const index = this.companies.findIndex((company) => company.id === id);
 
     if (index === -1) return null;
 
@@ -52,7 +53,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
       ...this.companies[index],
       ...data,
       updatedAt: new Date(),
-    } as unknown as CompanyDBOutDTO;
+    };
 
     this.companies[index] = updated;
 
@@ -60,7 +61,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-    const index = this.companies.findIndex((company) => company._id.toString() === id);
+    const index = this.companies.findIndex((company) => company.id === id);
 
     if (index === -1) return false;
 

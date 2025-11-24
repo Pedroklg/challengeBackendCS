@@ -50,7 +50,7 @@ export const insertEmployee = async (
 ) => {
   const company = await insertCompany(companyRepo);
 
-  const employee = makeFakeEmployeeData(company._id.toString(), overrides);
+  const employee = makeFakeEmployeeData(company.id, overrides);
 
   const dbEmployeeData: EmployeeDBCreateDTO = {
     ...employee,

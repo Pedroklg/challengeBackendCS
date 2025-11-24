@@ -1,10 +1,12 @@
 import { CompanyRepository } from '../repositories/CompanyRepository';
-import { CompanyDBOutDTO } from '../repositories/dto';
+import { CompanyResponse } from '../types';
 
 export class ListCompaniesUseCase {
   constructor(private companyRepository: CompanyRepository) {}
 
-  async execute(): Promise<CompanyDBOutDTO[]> {
-    return this.companyRepository.findAll();
+  async execute(): Promise<CompanyResponse[]> {
+    const companies = this.companyRepository.findAll();
+
+    return companies;
   }
 }

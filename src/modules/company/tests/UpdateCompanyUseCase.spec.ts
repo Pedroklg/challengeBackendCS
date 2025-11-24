@@ -9,7 +9,7 @@ describe('UpdateCompanyUseCase', () => {
     const useCase = new UpdateCompanyUseCase(repo);
     const created = await repo.create(makeFakeCompanyData());
 
-    const updated = await useCase.execute(created._id.toString(), { name: 'Updated Name' });
+    const updated = await useCase.execute(created.id, { name: 'Updated Name' });
 
     expect(updated).toBeTruthy();
     expect(updated.name).toBe('Updated Name');
@@ -28,13 +28,13 @@ describe('UpdateCompanyUseCase', () => {
   it('should throw when updating cnpj to one already in use', async () => {
     const repo = new InMemoryCompanyRepository();
     const useCase = new UpdateCompanyUseCase(repo);
-    const c1 = await repo.create(makeFakeCompanyData());
-    const c2 = await repo.create(makeFakeCompanyData());
+    const company1 = await repo.create(makeFakeCompanyData());
+    const ccompany2 = await repo.create(makeFakeCompanyData());
 
-    await expect(useCase.execute(c2._id.toString(), { cnpj: c1.cnpj })).rejects.toBeInstanceOf(
+    await expect(useCase.execute(ccompany2.id, { cnpj: company1.cnpj })).rejects.toBeInstanceOf(
       AppError
     );
-    await expect(useCase.execute(c2._id.toString(), { cnpj: c1.cnpj })).rejects.toThrow(
+    await expect(useCase.execute(ccompany2.id, { cnpj: company1.cnpj })).rejects.toThrow(
       'Company with this CNPJ already exists'
     );
   });

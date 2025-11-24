@@ -7,7 +7,7 @@ export interface CreateEmployeeRequest {
   email: string;
   position: string;
   password: string;
-  status?: ActivityStatus;
+  status: ActivityStatus;
   terminationDate?: Date;
   address?: Address;
 }

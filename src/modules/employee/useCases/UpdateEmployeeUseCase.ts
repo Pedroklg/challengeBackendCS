@@ -1,13 +1,13 @@
 import { AppError } from '../../../shared/AppError';
 import { EmployeeRepository } from '../repositories/EmployeeRepository';
 import { hashPassword } from '../../../shared/utils/hashPassword';
-import { UpdateEmployeeRequest } from '../types';
-import { EmployeeDBOutDTO, EmployeeDBUpdateDTO } from '../repositories/dto';
+import { UpdateEmployeeRequest, EmployeeResponse } from '../types';
+import { EmployeeDBUpdateDTO } from '../repositories/dto';
 
 export class UpdateEmployeeUseCase {
   constructor(private employeeRepository: EmployeeRepository) {}
 
-  async execute(id: string, data: UpdateEmployeeRequest): Promise<EmployeeDBOutDTO> {
+  async execute(id: string, data: UpdateEmployeeRequest): Promise<EmployeeResponse> {
     const employee = await this.employeeRepository.findById(id);
 
     if (!employee) {

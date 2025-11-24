@@ -1,8 +1,7 @@
 import { AppError } from '../../../shared/AppError';
 import { CompanyRepository } from '../repositories/CompanyRepository';
 import { EmployeeRepository } from 'modules/employee/repositories/EmployeeRepository';
-import { CreateCompanyRequest } from '../types';
-import { CompanyDBOutDTO } from '../repositories/dto';
+import { CreateCompanyRequest, CompanyResponse } from '../types';
 import { CreateEmployeeUseCase } from '../../employee/useCases/CreateEmployeeUseCase';
 import { CreateEmployeeRequest } from '../../employee/types';
 
@@ -12,7 +11,7 @@ export class CreateCompanyUseCase {
     private employeeRepository?: EmployeeRepository
   ) {}
 
-  async execute(data: CreateCompanyRequest): Promise<CompanyDBOutDTO> {
+  async execute(data: CreateCompanyRequest): Promise<CompanyResponse> {
     const existingCompany = await this.companyRepository.findByCnpj(data.cnpj);
 
     if (existingCompany) {
@@ -34,7 +33,7 @@ export class CreateCompanyUseCase {
       );
 
       const employeeData: CreateEmployeeRequest = {
-        companyId: created._id.toString(),
+        companyId: created.id,
         ...firstEmployee,
       };
 
