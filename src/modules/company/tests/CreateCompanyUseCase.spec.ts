@@ -3,7 +3,7 @@ import { InMemoryEmployeeRepository } from '../../employee/repositories/InMemory
 import { CreateCompanyUseCase } from '../useCases/CreateCompanyUseCase';
 import { AppError } from '../../../shared/AppError';
 import { makeFakeCompanyData } from './utils';
-import { ActivityStatus } from 'shared/types';
+import { ActivityStatus } from '../../../shared/types';
 
 describe('CreateCompanyUseCase', () => {
   it('should create a company successfully', async () => {

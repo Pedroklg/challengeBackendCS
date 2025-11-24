@@ -1,4 +1,4 @@
-import { Address } from 'db/models/AddressModel';
+import { Address } from '../../db/models/AddressModel';
 import { CreateEmployeeRequest } from '../employee/types';
 
 export type CompanyAddress = Address;

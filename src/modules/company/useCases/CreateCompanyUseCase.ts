@@ -1,6 +1,6 @@
 import { AppError } from '../../../shared/AppError';
 import { CompanyRepository } from '../repositories/CompanyRepository';
-import { EmployeeRepository } from 'modules/employee/repositories/EmployeeRepository';
+import { EmployeeRepository } from '../../employee/repositories/EmployeeRepository';
 import { CreateCompanyRequest, CompanyResponse } from '../types';
 import { CreateEmployeeUseCase } from '../../employee/useCases/CreateEmployeeUseCase';
 import { CreateEmployeeRequest } from '../../employee/types';

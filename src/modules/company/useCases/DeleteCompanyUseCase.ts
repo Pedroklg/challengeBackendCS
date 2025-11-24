@@ -1,4 +1,4 @@
-import { EmployeeRepository } from 'modules/employee/repositories/EmployeeRepository';
+import { EmployeeRepository } from '../../employee/repositories/EmployeeRepository';
 import { CompanyRepository } from '../repositories/CompanyRepository';
 import { AppError } from '../../../shared/AppError';
 

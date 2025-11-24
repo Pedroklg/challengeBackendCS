@@ -2,7 +2,11 @@ import { Router } from 'express';
 import { createCompanySchema, updateCompanySchema } from '../validators/companySchemas';
 import { validate } from './../midlewares/validation';
 import { CompanyController } from '../modules/company/CompanyController';
-import { CreateCompanyRequest, UpdateCompanyRequest, CompanyResponse } from 'modules/company/types';
+import {
+  CreateCompanyRequest,
+  UpdateCompanyRequest,
+  CompanyResponse,
+} from '../modules/company/types';
 import { IdParams, NoParams } from '../shared/types';
 
 const companyRoutes = Router();

@@ -1,4 +1,4 @@
-import { CompanyRepository } from 'modules/company/repositories/CompanyRepository';
+import { CompanyRepository } from '../../company/repositories/CompanyRepository';
 import { EmployeeRepository } from '../repositories/EmployeeRepository';
 import { AppError } from '../../../shared/AppError';
 import { EmployeeResponse } from '../types';

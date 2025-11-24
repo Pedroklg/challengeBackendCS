@@ -5,7 +5,7 @@ import { CompanyDBCreateDTO } from '../../company/repositories/dto';
 import { CreateEmployeeRequest } from '../types';
 import { CreateCompanyRequest } from '../../company/types';
 import { faker } from '@faker-js/faker';
-import { ActivityStatus } from 'shared/types';
+import { ActivityStatus } from '../../../shared/types';
 import { makeFakeCompanyData } from '../../company/tests/utils';
 
 export const makeFakeEmployeeData = (
